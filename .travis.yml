@@ -1,0 +1,25 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t praneethkat/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true praneethkat/react-test npm test -- --coverage     
+
+after_success:
+    - docker build -t praneethkat/fibo-client ./client
+    - docker build -t praneethkat/fibo-nginx ./nginx
+    - docker built -t praneethkat/fibo-server ./server
+    - docker built -t praneethkat/fibo-worker ./worker
+
+    # Log in to docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+    # After logging in, push to docker-hub
+    - docker push praneethkat/fibo-client
+    - docker push praneethkat/fibo-nginx
+    - docker push praneethkat/fibo-server
+    - docker push praneethkat/fibo-worker
+
