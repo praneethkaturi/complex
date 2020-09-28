@@ -11,8 +11,8 @@ script:
 after_success:
     - docker build -t praneethkat/fibo-client ./client
     - docker build -t praneethkat/fibo-nginx ./nginx
-    - docker built -t praneethkat/fibo-server ./server
-    - docker built -t praneethkat/fibo-worker ./worker
+    - docker build -t praneethkat/fibo-server ./server
+    - docker build -t praneethkat/fibo-worker ./worker
 
     # Log in to docker CLI
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
